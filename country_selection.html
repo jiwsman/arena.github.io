@@ -1,0 +1,695 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Gaming Access</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        :root {
+            --deep-purple: #6A0DAD;
+            --crimson-red: #DC143C;
+            --electric-blue: #00FFFF;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #300050, #6A0DAD, #9400D3);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--electric-blue), 0 0 20px var(--electric-blue);
+        }
+
+        .selection-area {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--electric-blue);
+            margin-bottom: 1rem;
+        }
+
+        .region-grid, .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .region-item, .device-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(106, 13, 173, 0.3);
+            border: 2px solid var(--deep-purple);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .region-item:hover, .device-item:hover {
+            background: var(--deep-purple);
+            box-shadow: 0 0 15px var(--electric-blue);
+        }
+
+        .region-item img {
+            width: 60px;
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+
+        .device-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            background: var(--crimson-red);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            background: var(--deep-purple);
+            box-shadow: 0 0 20px var(--electric-blue);
+        }
+
+        #timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px var(--electric-blue);
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+
+        .modal-content {
+            background: linear-gradient(135deg, #300050, #6A0DAD);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid var(--electric-blue);
+            width: 80%;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 30px var(--electric-blue);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .yes-button {
+            background-color: var(--crimson-red);
+            color: white;
+        }
+
+        .no-button {
+            background-color: #444;
+            color: white;
+        }
+
+        .yes-button:hover {
+            background-color: #ff0000;
+            box-shadow: 0 0 15px var(--electric-blue);
+        }
+
+        .no-button:hover {
+            background-color: #666;
+        }
+
+
+
+        #selectedFlag {
+            width: 60px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+    
+
+
+
+
+
+        /* Modal Styling */
+        #unsupportedModal {
+            background-color: #0A0A0A;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px #DC143C;
+            text-align: center;
+            color: #fff;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            z-index: 9999;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Modal Header */
+        .modal-content h2 {
+            font-size: 1.5em;
+            color: #1E90FF;
+            margin-bottom: 15px;
+        }
+
+        /* Modal Paragraphs */
+        .modal-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons Styling */
+        .modal-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease-in-out;
+            font-size: 1em;
+        }
+
+        .change-device-button {
+            background-color: #1E90FF;
+            color: #fff;
+            box-shadow: 0px 0px 10px 2px #1E90FF;
+        }
+
+        .change-device-button:hover {
+            background-color: #6A0DAD;
+            box-shadow: 0px 0px 15px 5px #6A0DAD;
+        }
+
+        .cancel-button {
+            background-color: #DC143C;
+            color: #fff;
+            box-shadow: 0px 0px 10px 2px #DC143C;
+        }
+
+        .cancel-button:hover {
+            background-color: #6A0DAD;
+            box-shadow: 0px 0px 15px 5px #6A0DAD;
+        }
+        
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Get 3 Months Free – Unlock Premium Gaming Instantly!</h1>
+        
+        <div class="selection-area">
+            <h2>Select Your Region</h2>
+            <div class="region-grid">
+                <div class="region-item" data-region="Australia">
+                    <img src="https://flagcdn.com/w80/au.png" alt="Australia">
+                    <span>Australia</span>
+                </div>
+
+                <div class="region-item" data-region="Belgium">
+                    <img src="https://flagcdn.com/w80/be.png" alt="Belgium">
+                    <span>Belgium</span>
+                </div>
+
+                <div class="region-item" data-region="Canada">
+                    <img src="https://flagcdn.com/w80/ca.png" alt="Canada">
+                    <span>Canada</span>
+                </div>
+
+                <div class="region-item" data-region="Spain">
+                    <img src="https://flagcdn.com/w80/es.png" alt="Spain">
+                    <span>Spain</span>
+                </div>
+
+                <div class="region-item" data-region="Netherlands">
+                    <img src="https://flagcdn.com/w80/nl.png" alt="Netherlands">
+                    <span>Netherlands</span>
+                </div>
+
+                <div class="region-item" data-region="United Kingdom">
+                    <img src="https://flagcdn.com/w80/gb.png" alt="United Kingdom">
+                    <span>United Kingdom</span>
+                </div>
+
+                <div class="region-item" data-region="United States">
+                    <img src="https://flagcdn.com/w80/us.png" alt="United States">
+                    <span>United States</span>
+                </div>
+
+                <div class="region-item" data-region="Switzerland">
+                    <img src="https://flagcdn.com/w80/ch.png" alt="Switzerland">
+                    <span>Switzerland</span>
+                </div>
+
+                <div class="region-item" data-region="Germany">
+                    <img src="https://flagcdn.com/w80/de.png" alt="Germany">
+                    <span>Germany</span>
+                </div>
+
+                <div class="region-item" data-region="France">
+                    <img src="https://flagcdn.com/w80/fr.png" alt="France">
+                    <span>France</span>
+                </div>
+
+                <div class="region-item" data-region="Italy">
+                    <img src="https://flagcdn.com/w80/it.png" alt="Italy">
+                    <span>Italy</span>
+                </div>
+                <div class="region-item" data-region="Poland">
+                    <img src="https://flagcdn.com/w80/pl.png" alt="Poland">
+                    <span>Poland</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="selection-area">
+            <h2>Select Your Device</h2>
+            <div class="device-grid">
+                <div class="device-item" data-device="phone">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Phone</span>
+                </div>
+                <div class="device-item" data-device="tablet">
+                    <i class="fas fa-tablet-alt"></i>
+                    <span>Tablet</span>
+                </div>
+                <div class="device-item" data-device="computer">
+                    <i class="fas fa-desktop"></i>
+                    <span>Computer</span>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="cta-button pulse" id="finalCTA">Start Your Free Access</a>
+    </div>
+    <div id="timer">02:00</div>
+
+
+
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Welcome, <span id="selectedRegion"></span> Player!</h2>
+            <p>Your Premium Access Is 100% Free.</p>
+            <p><strong>Are you sure you've selected the correct device and region?</strong></p>
+            <div class="modal-buttons">
+                <button class="modal-button yes-button" id="yesButton">Yes (Proceed)</button>
+                <button class="modal-button no-button" id="noButton">No (Go Back)</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="unsupportedModal" class="modal">
+        <div class="modal-content">
+            <h2>Sorry, <span id="selectedRegion"></span> Player!</h2>
+            <p>The free premium credit is not available for <strong><span id="selectedDevice"></span></strong> users .</p>
+            <p>But don't worry, you can still access it using your <strong><span id="dynamicDevice">Computer</span></strong>.</p>
+            <p>Switch to a supported device and enjoy your exclusive offer!</p>
+            <div class="modal-buttons">
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Initialize two variables to store the selected region and device.
+        let selectedRegion = '';
+        let selectedDevice = '';
+
+        // Add event listeners to all elements with the class 'region-item'.
+        // When a region item is clicked, update the border of all region items to a default style (deep purple),
+        // then change the border of the clicked item to a different color (electric blue).
+        // The selectedRegion variable is updated with the 'data-region' attribute of the clicked item.
+        // After that, checkSelections() is called to verify if both region and device are selected.
+        document.querySelectorAll('.region-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.region-item').forEach(i => i.style.border = '2px solid var(--deep-purple)');
+                this.style.border = '2px solid var(--electric-blue)';
+                selectedRegion = this.dataset.region;
+                checkSelections();
+            });
+        });
+
+        // Similar to the region selection, this block adds event listeners to all elements with the class 'device-item'.
+        // When a device item is clicked, update the border of all device items to a default style (deep purple),
+        // then change the border of the clicked item to a different color (electric blue).
+        // The selectedDevice variable is updated with the 'data-device' attribute of the clicked item.
+        // The checkSelections() function is called to verify both selections.
+        document.querySelectorAll('.device-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.device-item').forEach(i => i.style.border = '2px solid var(--deep-purple)');
+                this.style.border = '2px solid var(--electric-blue)';
+                selectedDevice = this.dataset.device;
+                checkSelections();
+            });
+        });
+
+        // This function enables or disables a button (call-to-action, 'finalCTA') based on the user's selections.
+        // If both a region and a device are selected, the button becomes fully clickable and visible (opacity 1, pointer enabled).
+        // If one or both selections are missing, the button becomes semi-transparent and unclickable.
+        function checkSelections() {
+            const cta = document.getElementById('finalCTA');
+            if (selectedRegion && selectedDevice) {
+                cta.style.opacity = '1';
+                cta.style.pointerEvents = 'auto';
+            } else {
+                cta.style.opacity = '0.5';
+                cta.style.pointerEvents = 'none';
+            }
+        }
+
+
+        function findOffer(region, device) {
+            // Convert inputs to lowercase
+            region = region.toLowerCase();
+            device = device.toLowerCase();
+
+            // Offers data    Missing:  PC  (DE FR IT PL) 
+            const offersData = {
+                "Offer_1": {
+                    "name": "Hentai Heroes - SOI - Desktop - AU",
+                    "accepted_countries": ["Australia"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/kua5fjqhj4?url_id=0&aff_id=341157&offer_id=7636&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_2": {
+                    "name": "Hentai Heroes - SOI - Desktop - BE",
+                    "accepted_countries": ["Belgium"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/i6hf77xqrk?url_id=0&aff_id=341157&offer_id=7640&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_3": {
+                    "name": "Hentai Heroes - SOI - Desktop - CA",
+                    "accepted_countries": ["Canada"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/p99p2vp3nk?url_id=0&aff_id=341157&offer_id=7633&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_4": {
+                    "name": "Hentai Heroes - SOI - Desktop - ES",
+                    "accepted_countries": ["Spain"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/5njpg5veyo?url_id=0&aff_id=341157&offer_id=7637&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_5": {
+                    "name": "Hentai Heroes - SOI - Desktop - NL",
+                    "accepted_countries": ["Netherlands"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/k3famkaqbk?url_id=0&aff_id=341157&offer_id=9518&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_6": {
+                    "name": "Hentai Heroes - SOI - Desktop - UK",
+                    "accepted_countries": ["United Kingdom"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/akygqgftts?url_id=0&aff_id=341157&offer_id=7634&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_7": {
+                    "name": "Hentai Heroes - SOI - Desktop - US",
+                    "accepted_countries": ["United States"],
+                    "accepted_devices": ["computer"],
+                    "url": "https://t.aagm.link/2qqevsktmo?url_id=0&aff_id=341157&offer_id=7635&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_8": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - AU",
+                    "accepted_countries": ["Australia"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/k0t56vv1j4?url_id=0&aff_id=341157&offer_id=9513&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_9": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - BE",
+                    "accepted_countries": ["Belgium"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/1gq947uoao?url_id=0&aff_id=341157&offer_id=9514&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN" 
+                },
+                "Offer_10": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - CA" ,
+                    "accepted_countries": ["Canada"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/t5byquxkcg?url_id=0&aff_id=341157&offer_id=9511&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN" 
+                },
+                "Offer_11": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - CH",
+                    "accepted_countries": ["Switzerland"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/zghzgrxuf4?url_id=0&aff_id=341157&offer_id=9508&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_12": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - DE",
+                    "accepted_countries": ["Germany"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/2v53k5evls?url_id=0&aff_id=341157&offer_id=9506&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_13": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - ES",
+                    "accepted_countries": ["Spain"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/bza79kq1hc?url_id=0&aff_id=341157&offer_id=9516&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_14": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - FR",
+                    "accepted_countries": ["France"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/53bl4sm77k?url_id=0&aff_id=341157&offer_id=9510&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_15": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - IT",
+                    "accepted_countries": ["Italy"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/vz7tkkv8u8?url_id=0&aff_id=341157&offer_id=9515&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN" 
+                },
+                "Offer_16": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - NL",
+                    "accepted_countries": ["Netherlands"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/o2fprmlj40?url_id=0&aff_id=341157&offer_id=9509&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_17": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - PL",
+                    "accepted_countries": ["Poland"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/medzkdpbeo?url_id=0&aff_id=341157&offer_id=9517&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+                "Offer_18": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - UK",
+                    "accepted_countries": ["United Kingdom"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/hgpqykxc5c?url_id=0&aff_id=341157&offer_id=9507&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN" 
+                },
+                "Offer_19": {
+                    "name": "Hentai Heroes - SOI - Mobile/Tablet - US",
+                    "accepted_countries": ["United States"],
+                    "accepted_devices": ["Phone", "tablet"],
+                    "url": "https://t.aagm.link/fr0uzm8vr4?url_id=0&aff_id=341157&offer_id=9512&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
+                },
+
+            };
+
+            // Loop through all offers
+            for (const offer of Object.values(offersData)) {
+                // Convert accepted countries and devices to lowercase for comparison
+                const acceptedCountries = offer.accepted_countries.map(country => country.toLowerCase());
+                const acceptedDevices = offer.accepted_devices.map(dev => dev.toLowerCase());
+
+                // Check if both region and device match
+                if (acceptedCountries.includes(region) && acceptedDevices.includes(device)) {
+                    return offer.url; // Return the URL if a match is found
+                }
+            }
+
+            // If no match is found, return null
+            return null;
+        }
+
+        document.getElementById('finalCTA').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (selectedRegion && selectedDevice) {
+                const offerUrl = findOffer(selectedRegion, selectedDevice);
+                if (offerUrl) {
+                    const modal = document.getElementById('welcomeModal');
+                    const regionSpan = document.getElementById('selectedRegion');
+                    regionSpan.textContent = selectedRegion.toUpperCase();
+                    document.getElementById('yesButton').setAttribute('data-url', offerUrl);
+                    modal.style.display = 'block';
+                } else {
+
+                    const unsupportedModal = document.getElementById('unsupportedModal');
+                    const selectedDeviceSpan = document.getElementById('selectedDevice');
+                    const dynamicDeviceSpan = document.getElementById('dynamicDevice');
+
+                    // Function to update the dynamic device text
+                    function updateDynamicDevice() {
+                        if (selectedDevice.toLowerCase() === "tablet" || selectedDevice.toLowerCase() === "phone") {
+                            dynamicDeviceSpan.textContent = "Computer";
+                        } else if (selectedDevice.toLowerCase() === "computer") {
+                            dynamicDeviceSpan.textContent = "Phone";
+                        } else {
+                            dynamicDeviceSpan.textContent = "another device"; // Default case
+                        }
+                    }
+
+                    // Update the selected device and dynamic device text
+                    selectedDeviceSpan.textContent = selectedDevice;
+                    updateDynamicDevice();
+
+                    // Show the modal
+                    unsupportedModal.style.display = 'block';
+
+                }
+            }
+        });
+
+        document.getElementById('yesButton').addEventListener('click', function() {
+            const offerUrl = this.getAttribute('data-url');
+            if (offerUrl) {
+                window.location.href = offerUrl;
+            }
+        });
+
+        document.getElementById('noButton').addEventListener('click', function() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        });
+
+
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+
+
+
+
+
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        });
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            let twoMinutes = 60 * 2,
+                display = document.querySelector('#timer');
+            startTimer(twoMinutes, display);
+        };
+
+        checkSelections();
+    </script>
+</body>
+</html>

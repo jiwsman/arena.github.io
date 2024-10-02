@@ -1,5 +1,7 @@
-themeColor: '#ff0a16'
-primaryDark: '#141414'
+
+themeColor: '#4A0E4E'
+primaryDark: '#1e1e24'  # Dark Charcoal - Background, modern and professional
 accentDark: '#ffffff'
 lightGray: '#f2f2f2'
-texts: '#333333'
+texts: '#e5a4cb'        # Rose Gold - Highlight, adding a touch of luxury
+
