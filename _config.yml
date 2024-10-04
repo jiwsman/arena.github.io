@@ -45,7 +45,6 @@ two_columns_layout: true
 
 # Advanced Settings
 url: "https://jiwsman.github.io" # the base hostname & protocol for your site
-baseurl: "/arena.github.io"
 google_analytics: "UA-XXXXXXXX-X"
 language: "en"
 categories_folder: category
