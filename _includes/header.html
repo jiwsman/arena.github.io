@@ -21,6 +21,14 @@
     {% endif %}
 </header>
 
+<script>
+if (window.location.hostname === "jiwsman.github.io") {
+  document.querySelectorAll('a.get-theme').forEach(function(link) {
+    link.href = "/arena.github.io" + link.getAttribute('href');
+  });
+}
+</script>
+
 <div id="mask" class="overlay"></div>
 
 {% include menu.html %}
