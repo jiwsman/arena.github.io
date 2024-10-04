@@ -112,14 +112,22 @@ layout: main
             </div>
 
             <div class="button-containerr">
-                <a href="{{ '/country_selection.html' | relative_url }}">
-                  <button class="gaming-buttonn"> 🔥Enter the Fantasy  </button>
+                <a href="{% link country_selection.html %}" class="github-link">
+                  <button type="button" class="gaming-button">🔥Enter the Fantasy</button>
                 </a>
             </div>
 
 
     </section>
 </main>
+
+<script>
+if (window.location.hostname === "jiwsman.github.io") {
+  document.querySelectorAll('a.github-link').forEach(function(link) {
+    link.href = "/arena.github.io" + link.getAttribute('href');
+  });
+}
+</script>
 
 
 <script>
