@@ -27,7 +27,7 @@ github_pages_path: /arena.github.io/country_selection.html
                 <h1 class="title">{{ featured.title }}</h1>
                 <p class="description">{{ featured.subtitle }}</p>
                  <div class="buttons">
-                    <a href="{% if jekyll.environment == 'production' %}{{ page.github_pages_path }}{% else %}{{ page.url }}{% endif %}">
+                    <a href="{% if jekyll.environment == 'production' %}{{ page.github_pages_path }}{% else %}{{ page.url }}{% endif %}" role="button" class="button">
                         <svg><use xlink:href="#icon-read"></use></svg>
                          <span> Enter the Fantasy  </span>
 
