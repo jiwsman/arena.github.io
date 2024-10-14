@@ -353,7 +353,11 @@
                     <img src="https://flagcdn.com/w80/pl.png" alt="Poland">
                     <span>Poland</span>
                 </div>
-                
+                <div class="region-item" data-region="OTHER">
+                    <img src="https://www.svgrepo.com/show/398539/unknown-flag.svg" alt="OTHER">
+                    <span>OTHER</span>
+                </div>  
+        
             </div>
         </div>
 
@@ -390,6 +394,20 @@
             <div class="modal-buttons">
                 <button class="modal-button yes-button" id="yesButton">Yes (Proceed)</button>
                 <button class="modal-button no-button" id="noButton">No (Go Back)</button>
+            </div>
+        </div>
+    </div>
+    <!-- New Modal for "OTHER" Region -->
+    <div id="welcomeModal_offer_20" class="modal">
+        <div class="modal-content" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+            <span class="close">&times;</span>
+            <h2>Welcome, <span id="selectedRegion"></span> Player!</h2>
+            <p>Your Premium Access Is 100% Free.</p>
+            <p style="font-size: 20px;">Your game is ready! Just verify your email through a quick sign-up on our partner site, and your exclusive link will be sent instantly.</p>
+            <p style="font-size: 20px;">Others have already claimed theirs—don’t miss out!</p>
+            <div class="modal-buttons">
+                <button class="modal-button yes-button" id="yesButton_offer_20">Yes (Proceed)</button>
+                <button class="modal-button no-button" id="noButton_offer_20">No (Go Back)</button>
             </div>
         </div>
     </div>
@@ -576,7 +594,12 @@
                     "accepted_devices": ["Phone", "tablet"],
                     "url": "https://t.aagm.link/fr0uzm8vr4?url_id=0&aff_id=341157&offer_id=9512&bo=3511,3512,3521,3522&aff_sub5=SF_006OG000004lmDN"
                 },
-
+                "Offer_20": {
+                    "name": "SecretDatingClub - DOI - Responsive",
+                    "accepted_countries": ["OTHER"],
+                    "accepted_devices": ["Phone", "tablet", "computer"],
+                    "url": "https://t.antj.link/341157/6877?aff_sub5=SF_006OG000004lmDN"
+                },
             };
 
             // Loop through all offers
@@ -599,7 +622,15 @@
             e.preventDefault();
             if (selectedRegion && selectedDevice) {
                 const offerUrl = findOffer(selectedRegion, selectedDevice);
-                if (offerUrl) {
+
+
+                if (selectedRegion.toLowerCase() === 'other') {
+                    const modal = document.getElementById('welcomeModal_offer_20');
+                    const regionSpan = document.getElementById('selectedRegion');
+                    regionSpan.textContent = selectedRegion.toUpperCase();
+                    document.getElementById('yesButton_offer_20').setAttribute('data-url', offerUrl);
+                    modal.style.display = 'block';
+                } else if (offerUrl) {
                     const modal = document.getElementById('welcomeModal');
                     const regionSpan = document.getElementById('selectedRegion');
                     regionSpan.textContent = selectedRegion.toUpperCase();
@@ -633,6 +664,17 @@
             }
         });
 
+        document.getElementById('yesButton_offer_20').addEventListener('click', function() {
+            const offerUrl = this.getAttribute('data-url');
+            if (offerUrl) {
+                window.location.href = offerUrl;
+            }
+        });
+
+        document.getElementById('noButton_offer_20').addEventListener('click', function() {
+            document.getElementById('welcomeModal_offer_20').style.display = 'none';
+        });
+
         document.getElementById('yesButton').addEventListener('click', function() {
             const offerUrl = this.getAttribute('data-url');
             if (offerUrl) {
@@ -656,11 +698,6 @@
                 event.target.style.display = 'none';
             }
         });
-
-
-
-
-
 
         document.querySelector('.close').addEventListener('click', function() {
             document.getElementById('welcomeModal').style.display = 'none';
